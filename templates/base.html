@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fawz Cleaning & Gardening</title>
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#10B981',
+            background: '#ffffff',
+            foreground: '#020817',
+            muted: '#94a3b8',
+            'muted-foreground': '#64748b'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .pattern-overlay-dark {
+      background-image: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="%23ffffff" stroke-width="1" stroke-opacity="0.3"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased bg-background text-foreground relative">
+
+  <!-- ✅ Top Contact Bar (Only on Homepage) -->
+  {% if request.path == '/' %}
+  <div id="topbar"
+    class="bg-emerald-600 text-white text-sm py-2 px-4 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-1 sm:gap-3 text-center">
+    <!-- <p class="font-medium">
+      📞 Need help? Call us at
+      <a href="tel:+61404999657" class="underline hover:text-gray-200 font-semibold">+61 404 999 657</a>
+    </p> -->
+    <!-- <p>
+      ✉️ <a href="mailto:hello@fawz.com.au" class="underline hover:text-gray-200">hello@fawz.com.au</a>
+    </p> -->
+  </div>
+  {% endif %}
+
+  <!-- Toast Messages -->
+  {% if messages %}
+  <div id="toast-container" class="fixed top-[100px] left-1/2 transform -translate-x-1/2 z-50 w-[90%] sm:w-auto">
+    {% for message in messages %}
+    <div
+      class="toast-message bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg mb-2 animate-fadeIn transition-opacity duration-500 text-center sm:text-left">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  <script>
+    setTimeout(() => {
+      document.querySelectorAll('.toast-message').forEach(msg => {
+        msg.classList.add('opacity-0');
+        setTimeout(() => msg.remove(), 500);
+      });
+    }, 4000);
+  </script>
+  {% endif %}
+
+
+  <!-- Page Content -->
+  {% block content %}{% endblock %}
+
+
+  <!-- ✅ Floating WhatsApp Button -->
+  <a href="https://wa.me/61460521469?text=Hello%20Fawz%20Cleaning%20%26%20Gardening%20👋%0AI’d%20like%20to%20get%20a%20quote%20or%20ask%20about%20your%20services."
+    target="_blank"
+    class="whatsapp-btn fixed bottom-5 right-5 z-50 flex items-center bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg rounded-full px-5 py-3">
+    <i class="fab fa-whatsapp text-2xl mr-2"></i>
+    <span class="hidden sm:inline">Chat on WhatsApp</span>
+  </a>
+
+  <!-- ✅ Smooth Scroll to Quote -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const quoteButtons = document.querySelectorAll('a[href*="#quote"]');
+      quoteButtons.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+          const targetId = this.getAttribute('href').split('#')[1];
+          const target = document.getElementById(targetId);
+          if (target) {
+            e.preventDefault();
+            window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+          } else {
+            window.location.href = `/#quote`;
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- ✅ Counter Animation -->
+  <script>
+    const counters = document.querySelectorAll('.counter');
+    const speed = 100;
+    const animateCounters = () => {
+      counters.forEach(counter => {
+        const updateCount = () => {
+          const target = +counter.getAttribute('data-target');
+          const count = +counter.innerText.replace(/[^0-9]/g, '');
+          const increment = target / speed;
+          const suffix = counter.getAttribute('data-suffix') || '';
+          if (count < target) {
+            counter.innerText = Math.ceil(count + increment) + suffix;
+            setTimeout(updateCount, 20);
+          } else {
+            counter.innerText = target.toLocaleString() + suffix;
+          }
+        };
+        updateCount();
+      });
+    };
+    const achievementsSection = document.getElementById('achievements');
+    let hasAnimated = false;
+    window.addEventListener('scroll', () => {
+      if (!achievementsSection) return;
+      const sectionTop = achievementsSection.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      if (sectionTop < windowHeight && !hasAnimated) {
+        hasAnimated = true;
+        animateCounters();
+      }
+    });
+  </script>
+
+  <!-- ✅ Header Offset Logic (Dynamic, No Gaps) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const topbar = document.getElementById('topbar');
+      const navbar = document.getElementById('navbar') || document.querySelector('nav');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      function adjustHeaderOffset() {
+        const topH = topbar ? topbar.offsetHeight : 0;
+        const navH = navbar ? navbar.offsetHeight : 64;
+        const total = topH + navH;
+
+        if (window.location.pathname !== "/" && !window.location.hash.includes("#")) {
+          document.body.style.marginTop = `${total - topH}px`;
+        } else {
+          document.body.style.marginTop = '0px';
+        }
+
+        if (mobileMenu) mobileMenu.style.top = `${total}px`;
+      }
+
+      adjustHeaderOffset();
+      window.addEventListener('resize', adjustHeaderOffset);
+      window.addEventListener('load', adjustHeaderOffset);
+      setTimeout(adjustHeaderOffset, 300);
+    });
+  </script>
+
+  <!-- ✅ AOS Animation Init -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true });
+  </script>
+
+  {% block scripts %}{% endblock %}
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+</body>
+</html>

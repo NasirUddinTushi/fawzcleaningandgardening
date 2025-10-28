@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "includes/navbar.html" %}
+
+<!-- ✅ HERO SECTION -->
+<section
+  class="relative bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-600 text-white py-28 overflow-hidden">
+  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-3">{{ service.name }}</h1>
+    <p class="text-white/90 text-lg max-w-3xl mx-auto">
+      Discover how our {{ service.name|lower }} services make your home or business shine — spotless, reliable, and
+      eco-friendly.
+    </p>
+  </div>
+</section>
+
+<!-- ✅ MAIN DETAILS SECTION -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+    <!-- Left: Image -->
+    <div data-aos="fade-right">
+      {% if service.image %}
+      <img src="{{ service.image.url }}" alt="{{ service.name }}"
+        class="w-full h-80 object-cover rounded-2xl shadow-lg">
+      {% else %}
+      <img src="{% static 'assets/placeholder.jpg' %}" alt="Service Image"
+        class="w-full h-80 object-cover rounded-2xl shadow-lg">
+      {% endif %}
+    </div>
+
+    <!-- Right: Details -->
+    <div data-aos="fade-left">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">{{ service.name }}</h2>
+
+      <!-- ✅ RENDER SAFE HTML DESCRIPTION -->
+      <div class="prose prose-emerald max-w-none text-gray-700 leading-relaxed mb-6">
+        {{ service.description|safe }}
+      </div>
+
+      <!-- ✅ FEATURES LIST -->
+      <ul class="space-y-3 text-gray-700">
+        <li class="flex items-start">
+          <i class="fa-solid fa-check text-emerald-600 mt-1 mr-2"></i>
+          <span>Fully insured and police-checked professionals</span>
+        </li>
+        <li class="flex items-start">
+          <i class="fa-solid fa-check text-emerald-600 mt-1 mr-2"></i>
+          <span>Eco-friendly and safe cleaning products</span>
+        </li>
+        <li class="flex items-start">
+          <i class="fa-solid fa-check text-emerald-600 mt-1 mr-2"></i>
+          <span>Flexible scheduling — available 7 days a week</span>
+        </li>
+        <li class="flex items-start">
+          <i class="fa-solid fa-check text-emerald-600 mt-1 mr-2"></i>
+          <span>Satisfaction guaranteed on every job</span>
+        </li>
+      </ul>
+
+      <!-- ✅ CTA BUTTONS -->
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href="/#quote"
+          class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-full font-medium transition-all duration-300">
+          Get a Free Quote
+        </a>
+        <a href="{% url 'services' %}"
+          class="inline-block bg-white border border-emerald-600 text-emerald-700 hover:bg-emerald-50 px-6 py-3 rounded-full font-medium transition-all duration-300">
+          Back to Services
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ CTA / ADDITIONAL INFO SECTION -->
+<section class="py-16 bg-gradient-to-r from-blue-900 via-emerald-800 to-emerald-700 text-white text-center">
+  <div class="relative z-10 max-w-4xl mx-auto px-6">
+    <h3 class="text-2xl md:text-3xl font-semibold mb-4">
+      Why Choose Fawz Cleaning & Gardening?
+    </h3>
+    <p class="text-white/90 mb-6 leading-relaxed">
+      Whether it’s {{ service.name|lower }} or another service, we combine reliability, experience, and eco-conscious
+      care to deliver spotless results every time.
+    </p>
+    <a href="{% url 'contact' %}"
+      class="bg-white text-emerald-700 font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-gray-200 transition-all duration-300">
+      Contact Us Today
+    </a>
+  </div>
+</section>
+
+{% include "includes/footer.html" %}
+{% endblock %}

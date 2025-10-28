@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "includes/navbar.html" %}
+
+<!-- ✅ HERO SECTION -->
+<section class="relative h-[50vh] flex items-center justify-center text-center text-white overflow-hidden">
+  <img
+    src="{% if page and page.hero_image %}{{ page.hero_image.url }}{% else %}{% static 'assets/terms-hero.jpg' %}{% endif %}"
+    alt="Terms & Conditions Background"
+    class="absolute inset-0 w-full h-full object-cover opacity-60"
+  />
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="relative z-10">
+    <h1 class="text-5xl font-bold mb-4">
+      {% if page and page.title %}
+        {{ page.title }}
+      {% else %}
+        Terms & Conditions
+      {% endif %}
+    </h1>
+    <p class="text-lg text-gray-100 max-w-2xl mx-auto">
+      {% if page and page.subtitle %}
+        {{ page.subtitle }}
+      {% else %}
+        Please read our terms before booking our cleaning or gardening services.
+      {% endif %}
+    </p>
+  </div>
+</section>
+
+<!-- ✅ CONTENT SECTION -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-5xl mx-auto px-6 lg:px-8">
+    {% if page and page.content %}
+      {{ page.content|safe }}
+    {% else %}
+      <!-- Default fallback -->
+      <div class="space-y-10">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-3">1. Agreement</h2>
+          <p class="text-gray-700 leading-relaxed">
+            By using Fawz Cleaning & Gardening services, you agree to abide by these terms. All bookings are subject to
+            availability and confirmation.
+          </p>
+        </div>
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-3">2. Cancellations</h2>
+          <p class="text-gray-700 leading-relaxed">
+            You may cancel up to 24 hours before your appointment. Late cancellations may incur a charge to cover staff and
+            scheduling costs.
+          </p>
+        </div>
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-3">3. Bond Back Guarantee</h2>
+          <p class="text-gray-700 leading-relaxed">
+            Our bond-back guarantee applies within 72 hours after completion, provided the property is vacant and utilities
+            are connected.
+          </p>
+        </div>
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-3">4. Liability</h2>
+          <p class="text-gray-700 leading-relaxed">
+            We are insured for all work carried out. However, Fawz Cleaning & Gardening is not liable for pre-existing
+            damage or wear and tear.
+          </p>
+        </div>
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-3">5. Contact</h2>
+          <p class="text-gray-700 leading-relaxed">
+            For further information, contact us at
+            <a href="mailto:al.fawzptyltd@gmail.com" class="text-blue-600 underline">al.fawzptyltd@gmail.com</a>
+            or call
+            <a href="tel:+61460521469" class="text-blue-600 underline">+61 460 521 469</a>.
+          </p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% include "includes/footer.html" %}
+{% endblock %}

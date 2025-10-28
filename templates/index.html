@@ -1,0 +1,601 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "includes/navbar.html" %}
+
+<!-- ================== HERO SECTION ================== -->
+<section
+  id="hero"
+  class="relative min-h-screen flex items-center overflow-hidden pt-[var(--header-total)]"
+>
+  <!-- ✅ Dynamic Background Image -->
+  <div class="absolute inset-0">
+    {% if hero and hero.image %}
+      <img src="{{ hero.image.url }}" alt="Hero Background" class="w-full h-full object-cover brightness-[0.9]" />
+    {% else %}
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2070&q=80"
+           alt="Modern home exterior"
+           class="w-full h-full object-cover brightness-[0.9]" />
+    {% endif %}
+    <div class="absolute inset-0 bg-gradient-to-r {{ hero.overlay_color|default:'from-black/70 via-black/60 to-transparent' }}"></div>
+  </div>
+
+  <!-- ✅ Content -->
+  <div class="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 text-left">
+    <!-- Tag -->
+    <div
+      class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 text-sm text-white"
+      data-aos="fade-up"
+    >
+      <i class="fas fa-shield-alt text-emerald-400"></i>
+      <span>Bond Back Guarantee</span>
+    </div>
+
+    <!-- ✅ Title (dynamic if available) -->
+    <h1
+      class="text-5xl sm:text-7xl font-extrabold leading-tight mb-6 text-white"
+      data-aos="fade-up"
+      data-aos-delay="100"
+    >
+      {{ hero.title|default:"Spotless. Stress-Free." }}
+      <span class="text-blue-400">Guaranteed.</span>
+    </h1>
+
+    <!-- ✅ Subtitle -->
+    <p
+      class="text-lg sm:text-xl text-gray-200 max-w-2xl mb-10 leading-relaxed"
+      data-aos="fade-up"
+      data-aos-delay="200"
+    >
+      {{ hero.subtitle|default:"Transform your space with our professional, eco-friendly cleaning and gardening solutions. Trusted by homeowners and businesses across the city." }}
+    </p>
+
+    <!-- ✅ Points (Static Default) -->
+    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-white mb-10">
+      <li class="flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition">
+        <i class="fas fa-shield-alt text-emerald-400 text-lg"></i> Insured
+      </li>
+      <li class="flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition">
+        <i class="fas fa-clock text-emerald-400 text-lg"></i> Flexible Scheduling (24/7)
+      </li>
+      <li class="flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition">
+        <i class="fas fa-user-shield text-emerald-400 text-lg"></i> Police Checked
+      </li>
+      <li class="flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition">
+        <i class="fas fa-leaf text-emerald-400 text-lg"></i> Eco-Friendly Products
+      </li>
+      <li class="flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg transition">
+        <i class="fas fa-heart text-emerald-400 text-lg"></i> Satisfaction Guaranteed
+      </li>
+    </ul>
+
+    <!-- ✅ Static Buttons -->
+    <div
+      class="flex flex-row flex-wrap justify-center gap-4 pb-12"
+      data-aos="fade-up"
+      data-aos-delay="400"
+    >
+      <a
+        href="/#quote"
+        class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-4 rounded-lg text-lg transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+      >
+        <i class="fas fa-paper-plane"></i> Get Free Quote
+      </a>
+      <a
+        href="/services/"
+        class="border-2 border-white/40 hover:border-emerald-400 text-white font-semibold px-8 py-4 rounded-lg text-lg transition flex items-center justify-center gap-2"
+      >
+        View Our Services
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<!-- ================== GET FREE QUOTE ================== -->
+<section id="quote" class="py-20 bg-gradient-to-br from-blue-50 via-white to-blue-100">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-3">
+                Get Your <span class="text-blue-700">Free Quote</span>
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Fill out the form below and our team will get back to you as soon as possible.
+            </p>
+        </div>
+
+        <!-- Boxed Quote Form -->
+        <div
+            class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-blue-100 p-10 max-w-5xl mx-auto transition-transform duration-300 hover:-translate-y-2 hover:shadow-blue-200/60">
+            <form method="POST" action="{% url 'quote_request' %}" class="space-y-8">
+                {% csrf_token %}
+
+                <!-- Two-column layout -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+                        <input type="text" name="name" placeholder="Enter your full name" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                        <input type="email" name="email" placeholder="Enter your email" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                        <input type="tel" name="phone" placeholder="Enter your phone number" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Service Address</label>
+                        <input type="text" name="address" placeholder="Enter service address" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">City</label>
+                        <input type="text" name="city" placeholder="Enter your city"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Postal Code</label>
+                        <input type="text" name="postal_code" placeholder="Enter postal code"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                </div>
+
+                <!-- Select Services -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Select Services</label>
+                    <div class="flex flex-wrap gap-4">
+                        {% for service in services %}
+                        <label
+                            class="flex items-center space-x-2 px-5 py-3 bg-white border border-blue-100 rounded-lg cursor-pointer hover:bg-blue-50 transition">
+                            <input type="checkbox" name="service" value="{{ service.id }}" class="accent-blue-600">
+                            <span>{{ service.name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Additional Message -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2"> Message</label>
+                    <textarea name="message" rows="4" placeholder="Any specific requirements or questions?"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                </div>
+
+                <!-- Submit -->
+                <div class="text-center">
+                    <button type="submit"
+                        class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full font-semibold transition flex items-center justify-center gap-2 mx-auto shadow-md hover:shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4l16 8-16 8V4z" />
+                        </svg>
+                        Get Your Free Quote
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<!-- ================== OUR SERVICES ================== -->
+<section id="services" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl font-bold mb-4 text-gray-900">Our Services</h2>
+        <p class="text-gray-600 mb-12 max-w-2xl mx-auto">
+            Complete residential, commercial, and outdoor cleaning & gardening solutions — designed to make your space
+            shine.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for service in services %}
+            <div class="bg-white shadow-md rounded-2xl overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group"
+                data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="overflow-hidden">
+                    {% if service.image %}
+                    <img src="{{ service.image.url }}" alt="{{ service.name }}"
+                        class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    {% else %}
+                    <img src="{% static 'assets/default-service.jpg' %}" alt="{{ service.name }}"
+                        class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    {% endif %}
+                </div>
+                <div class="p-6 text-left">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">{{ service.name }}</h3>
+                    <p class="text-gray-600 mb-6 text-sm leading-relaxed line-clamp-4">
+                        {{ service.description|safe|striptags|truncatewords:40 }}
+                    </p>
+                    <a href="{% url 'service_detail' service.slug %}"
+                        class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2 rounded-full transition duration-300">
+                        View Details
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-gray-500 text-center col-span-3">No services available right now.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- PRICING -->
+<section class="py-20 bg-white text-center">
+    <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            Transparent Pricing (AUD)
+        </h2>
+        <p class="text-gray-500 mb-12">
+            Indicative packages – final quote depends on size/condition. GST inclusive.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% if pricing %}
+            {% for plan in pricing %}
+            <div class="bg-white shadow-md rounded-2xl p-8 border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                <h3 class="text-xl font-semibold mb-3">{{ plan.title }}</h3>
+                <p class="text-emerald-600 font-bold text-2xl mb-4">{{ plan.price }}</p>
+
+                <ul class="text-gray-600 text-left mb-6 space-y-2">
+                    {% for feature in plan.features_list %}
+                    <li>✓ {{ feature }}</li>
+                    {% endfor %}
+                </ul>
+
+                {% if plan.button_link %}
+                <a href="{{ plan.button_link }}"
+                    class="bg-emerald-600 text-white px-6 py-2 rounded-full font-medium hover:bg-emerald-700 transition-all">
+                    {{ plan.button_text }}
+                </a>
+                {% else %}
+                <span class="inline-block bg-emerald-600 text-white px-6 py-2 rounded-full font-medium">
+                    {{ plan.button_text }}
+                </span>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% else %}
+            {# Fallback default cards when no pricing in DB #}
+            <div class="bg-white shadow-md rounded-2xl p-8 border hover:shadow-xl transition-all hover:-translate-y-1"
+                data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-xl font-semibold mb-3">Bond Clean</h3>
+                <p class="text-emerald-600 font-bold text-2xl mb-4">from $299</p>
+                <ul class="text-gray-600 text-left mb-6 space-y-2">
+                    <li>✓ End of lease, real-estate checklist</li>
+                    <li>✓ Kitchen + Bathrooms + Bedrooms</li>
+                    <li>✓ Oven, rangehood, light fittings</li>
+                </ul>
+                <a href="/#quote"
+                    class="bg-emerald-600 text-white px-6 py-2 rounded-full font-medium hover:bg-emerald-700 transition-all">Get
+                    Quote</a>
+            </div>
+
+            <div class="bg-white shadow-md rounded-2xl p-8 border hover:shadow-xl transition-all hover:-translate-y-1"
+                data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-xl font-semibold mb-3">Regular Clean</h3>
+                <p class="text-emerald-600 font-bold text-2xl mb-4">from $99</p>
+                <ul class="text-gray-600 text-left mb-6 space-y-2">
+                    <li>✓ Weekly / Fortnightly</li>
+                    <li>✓ Bathrooms, Kitchens, Bedrooms</li>
+                    <li>✓ Supplies Included</li>
+                </ul>
+                <a href="/#quote"
+                    class="bg-emerald-600 text-white px-6 py-2 rounded-full font-medium hover:bg-emerald-700 transition-all">Book
+                    Now</a>
+            </div>
+
+            <div class="bg-white shadow-md rounded-2xl p-8 border hover:shadow-xl transition-all hover:-translate-y-1"
+                data-aos="fade-up" data-aos-delay="300">
+                <h3 class="text-xl font-semibold mb-3">Commercial / Office</h3>
+                <p class="text-emerald-600 font-bold text-2xl mb-4">POA</p>
+                <ul class="text-gray-600 text-left mb-6 space-y-2">
+                    <li>✓ Tailored plans for businesses</li>
+                    <li>✓ Carpets, windows, desks</li>
+                    <li>✓ Bonded & WHS compliant</li>
+                </ul>
+                <a href="/#quote"
+                    class="bg-emerald-600 text-white px-6 py-2 rounded-full font-medium hover:bg-emerald-700 transition-all">Contact
+                    Us</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+<!-- ================== AREAS WE SERVICE ================== -->
+<section class="py-20 bg-[#f8fdf9]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl font-bold mb-12 text-gray-900">Proudly Servicing Darwin & Surrounds</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {% if locations %}
+            {% for location in locations %}
+            <div
+                class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ location.name }}</h3>
+                        {% if location.description %}
+                        <p class="text-gray-600 text-sm">{{ location.description }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <!-- ✅ Default fallback (6 locations) -->
+            {% comment %} Shown only if no dynamic data exists {% endcomment %}
+            <div
+                class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Darwin CBD</h3>
+                        <p class="text-gray-600 text-sm">Central business district of Darwin</p>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Palmerston</h3>
+                        <p class="text-gray-600 text-sm">Major residential and commercial hub south of Darwin</p>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Casuarina</h3>
+                        <p class="text-gray-600 text-sm">Northern suburbs of Darwin, home to Casuarina Square and
+                            coastal areas</p>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Howard Springs</h3>
+                        <p class="text-gray-600 text-sm">Rural suburb known for its nature and lifestyle blocks</p>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Humpty Doo</h3>
+                        <p class="text-gray-600 text-sm">Scenic rural town southeast of Darwin</p>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Rural Areas by request</h3>
+                        <p class="text-gray-600 text-sm">We also service nearby rural areas upon request</p>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ================== OUR ACHIEVEMENTS ================== -->
+<section id="achievements"
+    class="relative py-20 bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white overflow-hidden">
+    <!-- background subtle glow -->
+    <div
+        class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-700/10 via-transparent to-transparent">
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
+        <h2 class="text-4xl md:text-5xl font-bold mb-12 text-white tracking-tight">
+            Our Achievements
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
+            <!-- ✅ Counter 1 -->
+            <div class="flex flex-col items-center" data-aos="zoom-in" data-aos-delay="100">
+                <div
+                    class="bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 w-24 h-24 flex items-center justify-center rounded-full shadow-[0_0_25px_rgba(37,99,235,0.3)] mb-5 animate-pulse">
+                    <i class="fas fa-thumbs-up text-3xl text-blue-400"></i>
+                </div>
+                <div class="text-5xl font-bold counter text-blue-300" data-target="100" data-suffix="%">0</div>
+                <p class="text-gray-300 mt-2 text-lg">Service Guarantee</p>
+
+            </div>
+
+            <!-- ✅ Counter 2 -->
+            <div class="flex flex-col items-center" data-aos="zoom-in" data-aos-delay="200">
+                <div
+                    class="bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 w-24 h-24 flex items-center justify-center rounded-full shadow-[0_0_25px_rgba(37,99,235,0.3)] mb-5 animate-pulse">
+                    <i class="fas fa-users text-3xl text-blue-400"></i>
+                </div>
+                <div class="text-5xl font-bold counter text-blue-300" data-target="25">0</div>
+                <p class="text-gray-300 mt-2 text-lg">Experts</p>
+            </div>
+
+            <!-- ✅ Counter 3 -->
+            <div class="flex flex-col items-center" data-aos="zoom-in" data-aos-delay="300">
+                <div
+                    class="bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 w-24 h-24 flex items-center justify-center rounded-full shadow-[0_0_25px_rgba(37,99,235,0.3)] mb-5 animate-pulse">
+                    <i class="fas fa-building text-3xl text-blue-400"></i>
+                </div>
+                <div class="text-5xl font-bold counter text-blue-300" data-target="500">0+</div>
+                <p class="text-gray-300 mt-2 text-lg">Properties Cleaned</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decorative light blur circles -->
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-blue-500/10 blur-3xl rounded-full">
+    </div>
+    <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-400/10 blur-3xl rounded-full"></div>
+</section>
+
+
+
+
+<!-- ================== MOST POPULAR SERVICES ================== -->
+<section id="popular" class="py-20 bg-white text-center">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <h2 class="text-4xl font-bold mb-4 text-gray-900">Most Popular Services</h2>
+        <p class="text-gray-600 mb-12 max-w-2xl mx-auto">
+            Our customers’ favorite cleaning and gardening solutions — tried, trusted, and loved.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for service in popular_services %}
+            <a href="{% url 'service_detail' service.slug %}"
+                class="group block bg-white rounded-2xl shadow-md overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="overflow-hidden">
+                    {% if service.image %}
+                    <img src="{{ service.image.url }}" alt="{{ service.name }}"
+                        class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+                    {% else %}
+                    <img src="{% static 'assets/default-service.jpg' %}" alt="{{ service.name }}"
+                        class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+                    {% endif %}
+                </div>
+                <div class="p-6 text-left">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ service.name }}</h3>
+                    <p class="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-4">
+                        {{ service.description|safe|striptags|truncatewords:40 }}
+                    </p>
+                    <span class="text-emerald-600 font-semibold group-hover:text-emerald-700 transition">
+                        View Details →
+                    </span>
+                </div>
+            </a>
+            {% empty %}
+            <p class="text-gray-500 text-center col-span-3">No popular services available right now.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- ================== TESTIMONIALS SECTION ================== -->
+
+<section class="py-20 bg-emerald-50">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            What Our Clients Say
+        </h2>
+        <p class="text-gray-600 mb-12">
+            Real feedback from satisfied customers who trust our services.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for review in reviews %}
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition duration-300">
+                <p class="text-gray-600 italic mb-6">
+                    “{{ review.message|truncatechars:200 }}”
+                </p>
+
+                <div class="flex justify-center mb-4">
+                    {% for i in "12345"|slice:":review.rating"|make_list %}
+                    <i class="fas fa-star text-yellow-400"></i>
+                    {% endfor %}
+                </div>
+
+                <p class="font-semibold text-gray-800">— {{ review.name }}</p>
+            </div>
+            {% empty %}
+            <p class="text-center text-gray-500 col-span-full">
+                No client reviews available at the moment.
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- ✅ FAQ Section -->
+
+<section class="py-20 bg-gray-50" x-data="{ openFaq: null }">
+    <div class="max-w-5xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">
+            Frequently Asked Questions
+        </h2>
+        <p class="text-gray-600 text-center mb-12">
+            Get answers to common questions about our cleaning and gardening services.
+        </p>
+
+        <div class="space-y-4">
+            {% for faq in faqs %}
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                <button @click="openFaq === {{ forloop.counter }} ? openFaq = null : openFaq = {{ forloop.counter }}"
+                    class="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-emerald-50 transition-all duration-300">
+                    <h3 class="text-lg font-semibold text-gray-800">{{ faq.question }}</h3>
+                    <span class="text-emerald-600 text-xl transition-transform duration-300"
+                        :class="openFaq === {{ forloop.counter }} ? 'rotate-180' : ''">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </span>
+                </button>
+
+                <div x-show="openFaq === {{ forloop.counter }}" x-collapse
+                    class="px-6 pb-5 text-gray-600 leading-relaxed border-t border-gray-100 bg-emerald-50">
+                    {{ faq.answer }}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-gray-500">No FAQs available right now.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+{% include 'includes/footer.html' %}
+{% endblock %}

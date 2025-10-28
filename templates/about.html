@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "includes/navbar.html" %}
+
+<!-- ✅ HERO SECTION -->
+<section class="relative bg-cover bg-center bg-no-repeat py-32 text-white"
+  style="background-image: url('{% if page and page.hero_image %}{{ page.hero_image.url }}{% else %}{% static 'assets/about-hero.jpg' %}{% endif %}');">
+  <div class="absolute inset-0 bg-black/50"></div>
+  <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+      {% if page and page.title %}
+        {{ page.title }}
+      {% else %}
+        About {{ company.name|default:"Fawz Cleaning & Gardening" }}
+      {% endif %}
+    </h1>
+    <p class="text-lg text-white/90 max-w-2xl mx-auto">
+      {% if page and page.subtitle %}
+        {{ page.subtitle }}
+      {% else %}
+        Founded with purpose and passion — delivering quality cleaning and gardening services across the Northern Territory.
+      {% endif %}
+    </p>
+  </div>
+</section>
+
+<!-- ✅ MAIN ABOUT CONTENT -->
+<section class="py-20 bg-white">
+  <div class="max-w-5xl mx-auto px-6 sm:px-8 text-gray-700 leading-relaxed" data-aos="fade-up">
+    {% if page and page.content %}
+      {{ page.content|safe }}
+    {% else %}
+      <div class="space-y-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">About Fawz Cleaning & Gardening</h2>
+        <p>
+          Founded with purpose and passion, Fawz Cleaning & Gardening began trading in May 2025, and we bring with
+          us hands-on experience dating back to 2024. Based in the Northern Territory, we are proud to serve
+          domestic, commercial, industrial, hospitality and education-sector clients across the region.
+        </p>
+
+        <h3 class="text-2xl font-semibold text-gray-800 mt-10 mb-3">What we do</h3>
+        <p>We specialise in:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Bond / End-of-lease cleaning</li>
+          <li>Spring cleaning</li>
+          <li>Gardening and grounds maintenance</li>
+          <li>Lawn mowing and garden care</li>
+          <li>House maintenance services</li>
+          <li>Mailbox replacement and general handyman jobs</li>
+        </ul>
+
+        <p>
+          Whether you’re a homeowner, property-manager, business or institution, we tailor our services to match
+          your needs and site-type.
+        </p>
+
+        <h3 class="text-2xl font-semibold text-gray-800 mt-10 mb-3">Our Promise</h3>
+        <p>
+          At Fawz, our goal is simple: guaranteed work, high customer satisfaction, and minimal price. We
+          understand that your time, space and budget matter — so we aim to deliver professional, insured,
+          reliable results at a fair price. Working with property management companies and cleaning firms already,
+          we know what it takes to meet high standards and tight turnaround times.
+        </p>
+
+        <h3 class="text-2xl font-semibold text-gray-800 mt-10 mb-3">Why Choose Us</h3>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Experienced in the Northern Territory environment, with local knowledge and care.</li>
+          <li>Serving a wide range of clients: domestic, commercial, industrial, hospitality and education.</li>
+          <li>Full-service: cleaning, gardening, maintenance and handyman tasks under one roof.</li>
+          <li>Commitment to customer satisfaction and delivering on our guarantee.</li>
+        </ul>
+
+        <p class="mt-6">
+          We look forward to helping you keep your property looking its best.
+        </p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ✅ VALUE CARDS (ALWAYS SHOWN) -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+      <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+        <i class="fas fa-award text-4xl text-blue-600 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2 text-gray-900">Quality Assurance</h3>
+        <p class="text-gray-600">Every service is performed to the highest standards with quality checks and customer feedback.</p>
+      </div>
+      <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+        <i class="fas fa-leaf text-4xl text-green-600 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2 text-gray-900">Eco-Friendly</h3>
+        <p class="text-gray-600">We use environmentally safe products and sustainable practices in all our services.</p>
+      </div>
+      <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+        <i class="fas fa-clock text-4xl text-purple-600 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2 text-gray-900">Reliable Service</h3>
+        <p class="text-gray-600">Punctual, consistent, and dependable service you can count on every time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ CTA SECTION -->
+<section class="py-16 bg-gradient-to-r from-blue-900 via-emerald-800 to-emerald-700 text-white text-center">
+  <div class="relative z-10 max-w-4xl mx-auto px-6">
+    <h3 class="text-2xl md:text-3xl font-semibold mb-4">Want to know more?</h3>
+    <p class="text-white/90 mb-6 leading-relaxed">Contact our friendly team today to learn how we can help keep your property spotless and vibrant.</p>
+    <a href="{% url 'contact' %}"
+      class="bg-white text-emerald-700 font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-gray-200 transition-all duration-300">
+      Get in Touch
+    </a>
+  </div>
+</section>
+
+{% include "includes/footer.html" %}
+{% endblock %}

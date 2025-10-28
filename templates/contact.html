@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "includes/navbar.html" %}
+
+{% if contact_page %}
+<!-- ✅ HERO SECTION (Dynamic) -->
+<section class="relative bg-cover bg-center bg-no-repeat py-32 text-white"
+    style="background-image: url('{{ contact_page.hero_image.url }}');">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ contact_page.title }}</h1>
+        <p class="text-lg text-white/90 max-w-2xl mx-auto">{{ contact_page.subtitle }}</p>
+    </div>
+</section>
+{% else %}
+<!-- 🧩 Fallback if no data in admin -->
+<section class="relative bg-cover bg-center bg-no-repeat py-32 text-white"
+    style="background-image: url('{% static 'assets/contact-hero.jpg' %}');">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
+        <p class="text-lg text-white/90 max-w-2xl mx-auto">
+            We’re available 24/7 — get in touch anytime for cleaning, gardening, or custom service requests.
+        </p>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- ✅ CONTACT SECTION -->
+<div class="pt-20">
+    <section class="py-20 section-gradient relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0 pattern-overlay" style="background-size: 70px 70px;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-slideIn">
+                <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">Get in Touch</h2>
+                <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Have a question or need a quote? Our team is here to help — 24 hours a day, 7 days a week.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- ✅ Contact Form -->
+                <div class="glass-card rounded-2xl p-8 hover-scale animate-fadeIn">
+                    <h3 class="text-2xl font-bold text-foreground mb-6">Send us a Message</h3>
+
+                    <form method="POST" class="space-y-6">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit"
+                            class="w-full accent-gradient text-white py-3 rounded-lg font-semibold hover-glow transition-all duration-300">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ✅ Dynamic Contact Information -->
+                <div class="space-y-8">
+                    <!-- Address -->
+                    <div class="glass-card rounded-2xl p-6 hover-lift animate-fadeIn" style="animation-delay: 0.2s;">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-2xl text-primary mt-1 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h3 class="text-lg font-semibold text-foreground mb-2">Office Address</h3>
+                                <p class="text-muted-foreground leading-relaxed">
+                                    {{ company.address|default:"123 Garden Street, Green Valley, NT 0810" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="glass-card rounded-2xl p-6 hover-lift animate-fadeIn" style="animation-delay: 0.4s;">
+                        <div class="flex items-start">
+                            <i class="fas fa-phone text-2xl text-primary mt-1 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h3 class="text-lg font-semibold text-foreground mb-2">Phone Numbers</h3>
+                                <p class="text-muted-foreground leading-relaxed">
+                                    {{ company.phone|default:"+61 460 521 469" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="glass-card rounded-2xl p-6 hover-lift animate-fadeIn" style="animation-delay: 0.6s;">
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-2xl text-primary mt-1 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h3 class="text-lg font-semibold text-foreground mb-2">Email Addresses</h3>
+                                <p class="text-muted-foreground leading-relaxed">
+                                    {{ company.email|default:"hello@fawz.com.au" }}<br>
+                                    <!-- {% if company.website %} -->
+                                    <!-- <a href="{{ company.website }}" target="_blank" -->
+                                        <!-- class="text-primary hover:underline">{{ company.website }}</a> -->
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Static Availability -->
+                    <div class="glass-card rounded-2xl p-6 hover-lift animate-fadeIn" style="animation-delay: 0.8s;">
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-2xl text-primary mt-1 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h3 class="text-lg font-semibold text-foreground mb-2">We’re Available</h3>
+                                <p class="text-muted-foreground leading-relaxed">
+                                    24/7 — Day or night, we’re here to help with all your cleaning and gardening needs.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Dynamic Social Links -->
+                    {% if company.facebook or company.instagram or company.linkedin or company.youtube %}
+                    <div class="glass-card rounded-2xl p-6 hover-lift animate-fadeIn" style="animation-delay: 1s;">
+                        <h3 class="text-lg font-semibold text-foreground mb-3">Follow Us</h3>
+                        <div class="flex space-x-5 text-primary text-2xl">
+                            {% if company.facebook %}
+                            <a href="{{ company.facebook }}" target="_blank" aria-label="Facebook"
+                                class="hover:text-blue-600 transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            {% endif %}
+                            {% if company.instagram %}
+                            <a href="{{ company.instagram }}" target="_blank" aria-label="Instagram"
+                                class="hover:text-pink-500 transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            {% endif %}
+                            {% if company.linkedin %}
+                            <a href="{{ company.linkedin }}" target="_blank" aria-label="LinkedIn"
+                                class="hover:text-sky-700 transition">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            {% endif %}
+                            {% if company.youtube %}
+                            <a href="{{ company.youtube }}" target="_blank" aria-label="YouTube"
+                                class="hover:text-red-600 transition">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% include "includes/footer.html" %}
+{% endblock %}

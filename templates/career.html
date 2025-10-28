@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "includes/navbar.html" %}
+
+<main class="page-content">
+    <section class="py-20 section-gradient relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0 pattern-overlay" style="background-size: 80px 80px;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-slideIn">
+                <h1 class="text-5xl lg:text-6xl font-bold text-foreground mb-6">Join Our Team</h1>
+                <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    Build a rewarding career with Fawz Cleaning & Gardening and make a difference in people's lives.
+                </p>
+            </div>
+
+            <!-- Current Openings -->
+            <div class="mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-8 text-center animate-fadeIn">
+                    Current Openings
+                </h2>
+
+                <div class="space-y-6">
+                    {% for vacancy in vacancies %}
+                    <div class="glass-card rounded-2xl p-6 hover-scale animate-fadeIn" style="animation-delay: 0s;">
+                        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-foreground mb-2">{{ vacancy.title }}</h3>
+                                <p class="text-muted-foreground mb-4 leading-relaxed">{{ vacancy.description|safe }}</p>
+
+                                <!-- ✅ Job type display fixed -->
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    {% if vacancy.job_type %}
+                                        {% if vacancy.job_type == "full-time" %}
+                                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                                                {{ vacancy.get_job_type_display }}
+                                            </span>
+                                        {% elif vacancy.job_type == "part-time" %}
+                                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">
+                                                {{ vacancy.get_job_type_display }}
+                                            </span>
+                                        {% elif vacancy.job_type == "contract" %}
+                                            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">
+                                                {{ vacancy.get_job_type_display }}
+                                            </span>
+                                        {% elif vacancy.job_type == "internship" %}
+                                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                                                {{ vacancy.get_job_type_display }}
+                                            </span>
+                                        {% elif vacancy.job_type == "volunteer" %}
+                                            <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm font-medium">
+                                                {{ vacancy.get_job_type_display }}
+                                            </span>
+                                        {% else %}
+                                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                                {{ vacancy.get_job_type_display }}
+                                            </span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="text-muted-foreground">
+                                    <p><strong class="text-foreground">Location:</strong> {{ vacancy.location }}</p>
+                                    <p><strong class="text-foreground">Salary:</strong> ${{ vacancy.salary }}</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 lg:mt-0 lg:ml-6">
+                                <button
+                                    class="accent-gradient text-white px-6 py-3 rounded-full font-semibold hover-glow transition-all duration-300 apply-btn"
+                                    data-vacancy-id="{{ vacancy.id }}">
+                                    Apply Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="glass-card rounded-2xl p-6 hover-scale animate-fadeIn text-center">
+                        <h3 class="text-xl font-semibold text-foreground mb-2">No Openings Available</h3>
+                        <p class="text-muted-foreground mb-4 leading-relaxed">
+                            Sorry, no openings available at this time.
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Why Work With Us -->
+            <div class="text-center glass-card rounded-2xl p-8 hover-lift animate-fadeIn" style="animation-delay: 0.5s;">
+                <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">Why Work With Us?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                    <div class="animate-fadeIn" style="animation-delay: 0.7s;">
+                        <i class="fas fa-heart text-4xl text-primary mb-4 mx-auto"></i>
+                        <h3 class="font-semibold text-foreground mb-2">Great Benefits</h3>
+                        <p class="text-muted-foreground leading-relaxed">Health insurance, paid time off, and retirement plans</p>
+                    </div>
+                    <div class="animate-fadeIn" style="animation-delay: 0.9s;">
+                        <i class="fas fa-users text-4xl text-primary mb-4 mx-auto"></i>
+                        <h3 class="font-semibold text-foreground mb-2">Team Environment</h3>
+                        <p class="text-muted-foreground leading-relaxed">Supportive team culture with opportunities for growth</p>
+                    </div>
+                    <div class="animate-fadeIn" style="animation-delay: 1.1s;">
+                        <i class="fas fa-graduation-cap text-4xl text-primary mb-4 mx-auto"></i>
+                        <h3 class="font-semibold text-foreground mb-2">Training Provided</h3>
+                        <p class="text-muted-foreground leading-relaxed">Comprehensive training and skill development programs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% include "includes/footer.html" %}
+
+<!-- ✅ Popup Section (unchanged) -->
+<div id="application-popup" class="fixed inset-0 bg-black/60 z-[9999] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl relative animate-fadeIn">
+        <button class="absolute top-3 right-4 text-2xl font-bold text-gray-500 hover:text-gray-700 application-popup-close">&times;</button>
+        <div class="p-6">
+            <h3 class="text-xl font-semibold mb-4 text-center text-foreground">Apply for Position</h3>
+            <form id="application-form" enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="vacancy-input" name="vacancy">
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium">Full Name *</label>
+                        <input type="text" id="name" name="name" required class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium">Email Address *</label>
+                        <input type="email" id="email" name="email" required class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-medium">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label for="resume" class="block text-sm font-medium">Resume (PDF, DOC, DOCX)</label>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium">Cover Letter / Message</label>
+                        <textarea id="message" name="message" rows="4" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" class="cancel-btn bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg font-semibold">Cancel</button>
+                    <button type="submit" class="submit-btn bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-semibold">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const popup = document.getElementById('application-popup');
+        const closeBtn = popup.querySelector('.application-popup-close');
+        const cancelBtn = popup.querySelector('.cancel-btn');
+        const form = document.getElementById('application-form');
+        const vacancyInput = document.getElementById('vacancy-input');
+
+        document.querySelectorAll('.apply-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const vacancyId = this.getAttribute('data-vacancy-id');
+                vacancyInput.value = vacancyId;
+                form.action = `/job-application/${vacancyId}/`;
+                popup.classList.remove('hidden');
+            });
+        });
+
+        function closePopup() {
+            popup.classList.add('hidden');
+            form.reset();
+        }
+
+        closeBtn.addEventListener('click', closePopup);
+        cancelBtn.addEventListener('click', closePopup);
+
+        popup.addEventListener('click', e => {
+            if (e.target === popup) closePopup();
+        });
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const res = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value }
+            });
+
+            if (res.ok) {
+                popup.innerHTML = `
+                      <div class="bg-white rounded-2xl p-8 text-center max-w-md mx-auto">
+                        <i class="fas fa-check-circle text-4xl text-green-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-foreground mb-2">Application Submitted!</h3>
+                        <p class="text-muted-foreground mb-4">Thank you for applying. We’ll get back to you soon.</p>
+                        <button onclick="location.reload()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full font-semibold transition">Close</button>
+                      </div>`;
+            } else {
+                alert('Error submitting application. Please try again.');
+            }
+        });
+    });
+</script>
+{% endblock %}

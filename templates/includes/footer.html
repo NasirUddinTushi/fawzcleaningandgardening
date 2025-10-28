@@ -1,0 +1,117 @@
+{% load static %}
+
+<footer class="bg-gray-900 text-gray-300 py-12 mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
+
+    <!-- ✅ Company Info -->
+    <div>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-3 mb-4 text-center sm:text-left">
+        {% if company.logo %}
+          <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="h-12 w-auto mx-auto sm:mx-0 mb-3 sm:mb-0">
+        {% else %}
+          <img src="{% static 'assets/logo.png' %}" alt="Company Logo" class="h-12 w-auto mx-auto sm:mx-0 mb-3 sm:mb-0">
+        {% endif %}
+        <div>
+          <h3 class="text-xl font-bold text-white">
+            {{ company.name|default:"Fawz Cleaning & Gardening" }}
+          </h3>
+        </div>
+      </div>
+
+      <!-- ✅ Static tagline text -->
+      <p class="text-gray-400 text-sm mb-4 text-center sm:text-left">
+        Professional cleaning and gardening services for your home and business.
+      </p>
+
+      <!-- ✅ Dynamic Social Links (Centered Mobile + Hover Animation) -->
+      <div class="flex flex-wrap justify-center sm:justify-start gap-4 text-gray-400 text-lg mt-4 sm:mt-3">
+        {% if company.facebook %}
+        <a href="{{ company.facebook }}" target="_blank" aria-label="Facebook"
+          class="p-2 bg-gray-800/60 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-110">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        {% endif %}
+
+        {% if company.twitter %}
+        <a href="{{ company.twitter }}" target="_blank" aria-label="Twitter"
+          class="p-2 bg-gray-800/60 rounded-full hover:bg-sky-400 hover:text-white transition-all duration-300 transform hover:scale-110">
+          <i class="fab fa-twitter"></i>
+        </a>
+        {% endif %}
+
+        {% if company.instagram %}
+        <a href="{{ company.instagram }}" target="_blank" aria-label="Instagram"
+          class="p-2 bg-gray-800/60 rounded-full hover:bg-pink-500 hover:text-white transition-all duration-300 transform hover:scale-110">
+          <i class="fab fa-instagram"></i>
+        </a>
+        {% endif %}
+
+        {% if company.linkedin %}
+        <a href="{{ company.linkedin }}" target="_blank" aria-label="LinkedIn"
+          class="p-2 bg-gray-800/60 rounded-full hover:bg-blue-500 hover:text-white transition-all duration-300 transform hover:scale-110">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        {% endif %}
+
+        {% if company.youtube %}
+        <a href="{{ company.youtube }}" target="_blank" aria-label="YouTube"
+          class="p-2 bg-gray-800/60 rounded-full hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-110">
+          <i class="fab fa-youtube"></i>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ✅ Quick Links -->
+    <div>
+      <h4 class="text-white font-semibold mb-4">Quick Links</h4>
+      <ul class="space-y-2 text-gray-400">
+        <li><a href="{% url 'home' %}" class="hover:text-blue-500">Home</a></li>
+        <li><a href="{% url 'services' %}" class="hover:text-blue-500">Services</a></li>
+        <li><a href="{% url 'about' %}" class="hover:text-blue-500">About</a></li>
+        <li><a href="{% url 'contact' %}" class="hover:text-blue-500">Contact</a></li>
+        <li><a href="{% url 'career' %}" class="hover:text-blue-500">Careers</a></li>
+        <li><a href="{% url 'privacy_policy' %}" class="hover:text-blue-500">Privacy Policy</a></li>
+        <li><a href="{% url 'terms_conditions' %}" class="hover:text-blue-500">Terms &amp; Conditions</a></li>
+      </ul>
+    </div>
+
+    <!-- ✅ Services List -->
+    <div>
+      <h4 class="text-white font-semibold mb-4">Services</h4>
+      <ul class="space-y-2 text-gray-400">
+        {% for service in services %}
+        <li>
+          <a href="{% url 'service_detail' service.slug %}" class="hover:text-blue-500">
+            {{ service.name }}
+          </a>
+        </li>
+        {% empty %}
+        <li>No active services</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- ✅ Contact Info -->
+    <div>
+      <h4 class="text-white font-semibold mb-4">Contact Info</h4>
+      <ul class="space-y-3 text-gray-400 text-sm">
+        {% if company.address %}
+        <li><i class="fas fa-map-marker-alt mr-2 text-blue-500"></i>{{ company.address }}</li>
+        {% endif %}
+        {% if company.phone %}
+        <li><i class="fas fa-phone mr-2 text-blue-500"></i>{{ company.phone }}</li>
+        {% endif %}
+        {% if company.email %}
+        <li><i class="fas fa-envelope mr-2 text-blue-500"></i>{{ company.email }}</li>
+        {% endif %}
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ✅ Footer Bottom -->
+  <div class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-gray-400">
+    <p>© {{ now|date:"Y" }} {{ company.name|default:"Fawz Cleaning & Gardening" }}. All rights reserved.</p>
+  </div>
+</footer>

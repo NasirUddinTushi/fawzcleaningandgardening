@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "includes/navbar.html" %}
+
+<!-- ✅ HERO SECTION -->
+<section class="relative bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-600 text-white py-28 overflow-hidden">
+  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
+    <p class="text-white/90 text-lg max-w-2xl mx-auto">
+      Explore our wide range of professional cleaning and gardening services — designed to make your space spotless and stress-free.
+    </p>
+  </div>
+</section>
+
+<!-- ✅ ALL SERVICES SECTION -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">What We Offer</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        From one-time deep cleans to ongoing maintenance, our expert team has you covered.
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      {% for service in services %}
+      <div data-aos="fade-up" class="glass-card rounded-2xl p-6 bg-white shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+        {% if service.image %}
+          <img src="{{ service.image.url }}" alt="{{ service.name }}" class="w-full h-52 object-cover rounded-xl mb-4">
+        {% else %}
+          <img src="{% static 'assets/placeholder.jpg' %}" alt="Service Image" class="w-full h-52 object-cover rounded-xl mb-4">
+        {% endif %}
+
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">{{ service.name }}</h3>
+
+        <!-- ✅ FIXED: clean preview (no <div> visible) -->
+        <p class="text-gray-600 mb-5 text-sm leading-relaxed line-clamp-4">
+          {{ service.description|safe|striptags|truncatewords:40 }}
+
+        </p>
+
+        <a href="{% url 'service_detail' service.slug %}"
+           class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-full font-medium transition-all duration-300">
+          View Details
+        </a>
+      </div>
+      {% empty %}
+      <p class="text-center text-gray-500 col-span-full">No services available at the moment.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ✅ CTA SECTION -->
+<section class="py-16 bg-gradient-to-r from-blue-900 via-emerald-800 to-emerald-700 text-white text-center">
+  <div class="relative z-10 max-w-4xl mx-auto px-6">
+    <h3 class="text-2xl md:text-3xl font-semibold mb-4">Looking for a Custom Service?</h3>
+    <p class="text-white/90 mb-6 leading-relaxed">
+      We offer tailored cleaning and gardening solutions for your home or business. Get in touch today and let’s make your space shine.
+    </p>
+    <a href="/#quote"
+       class="bg-white text-emerald-700 font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-gray-200 transition-all duration-300">
+      Get a Free Quote
+    </a>
+  </div>
+</section>
+
+{% include "includes/footer.html" %}
+{% endblock %}
